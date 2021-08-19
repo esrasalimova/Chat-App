@@ -4,8 +4,8 @@ import { View, Text, Button } from 'react-native';
 
 export default class Chat extends React.Component {
   render() {
-    let name = this.props.route.params.name;
-    this.props.navigation.setOptions({ title: name});
+    let username = this.props.route.params.username;
+    this.props.navigation.setOptions({ title: username});
     return (
       <View style={{flex:1, justifyContent: 'center', alignItems: 'center'}}>
         <Text>Hello Chat!</Text>
