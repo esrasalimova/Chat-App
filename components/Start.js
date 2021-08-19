@@ -25,7 +25,7 @@ export default class Start extends React.Component {
           <Text style={styles.appName}>talk</Text>
         </ImageBackground>
 
-        {/* View Component for Chat-Username */}
+        {/* View Component for the Chat-Username */}
         <View style={styles.container}>
           <TextInput
             style={styles.inputField}
