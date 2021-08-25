@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Platform, Button, KeyboardAvoidingView } from "react-native";
-//import AsyncStorage from "@react-native-community/async-storage";
+import AsyncStorage from "@react-native-community/async-storage";
+import NetInfo from '@react-native-community/netinfo';
 
 const firebase = require("firebase");
 require("firebase/firestore");
@@ -15,7 +16,7 @@ const firebaseConfig = {
   measurementId: "G-VJEPJLKFD7"
 };
 
-import { GiftedChat, Bubble } from "react-native-gifted-chat";
+import { GiftedChat, Bubble, InputToolbar } from "react-native-gifted-chat";
 
 export default class Chat extends React.Component {
   constructor(props) {
@@ -91,6 +92,7 @@ export default class Chat extends React.Component {
       }),
       () => {
         this.saveMessage();
+        this.addMessage();
       }
     );
   }
@@ -116,6 +118,18 @@ export default class Chat extends React.Component {
     });
   };
 
+  //prevents any input if a user is offline
+  renderInputToolbar(props) {
+    if (this.state.isConnected == false) {
+    } else {
+      return(
+        <InputToolbar
+        {...props}
+        />
+      );
+    }
+  }
+
   renderBubble(props) {
     return (
       <Bubble
@@ -133,6 +147,15 @@ export default class Chat extends React.Component {
   componentDidMount() {
     const name = this.props.route.params.username;
     this.props.navigation.setOptions({ title: name });
+
+    //check if user is online or offline
+    NetInfo.fetch().then(connection => {
+      if (connection.isConnected) {
+        console.log('online');
+      } else {
+        console.log('offline');
+      }
+    });
 
     this.getMessages();
 
@@ -174,6 +197,7 @@ export default class Chat extends React.Component {
         }}
       >
         <GiftedChat
+          renderInputToolbar={this.renderInputToolbar}
           messages={this.state.messages}
           renderBubble={this.renderBubble.bind(this)}
           messages={this.state.messages}
