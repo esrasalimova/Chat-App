@@ -63,7 +63,7 @@ export default class Chat extends React.Component {
     try {
       await AsyncStorage.setItem(
         "messages",
-        JSON.stringyfy(this.state.messages)
+        JSON.stringify(this.state.messages)
       );
     } catch (error) {
       console.log(error.message);
@@ -87,11 +87,11 @@ export default class Chat extends React.Component {
     this.referenceChatMessages.add({
       uid: this.state.uid,
       _id: message._id,
-      text: message.text,
+      text: message.text || null,
       createdAt: message.createdAt,
       user: message.user,
-      image: message.image,
-      location: message.location,
+      image: message.image || null,
+      location: message.location || null,
     });
   }
 
@@ -188,6 +188,7 @@ export default class Chat extends React.Component {
     //check if user is online or offline
     NetInfo.fetch().then(connection => {
       if (connection.isConnected) {
+        this.setState({ isConnected: true });
         console.log('online');
       } else {
         console.log('offline');
